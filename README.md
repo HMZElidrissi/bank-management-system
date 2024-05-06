@@ -2,11 +2,16 @@
 
 This is a simple bank management system that allows users to create accounts, deposit money, withdraw money, and check their balance. The system is implemented in Spring Boot.
 
-## Features
+## Project outline
+
+- Users: There are two types of users in the system: customers and admins. 
+- Customers: Customers can create accounts, deposit money, withdraw money, and check their balance.
+- Admins: Admins can add and delete users from the system.
+- Accounts: There are two types of accounts in the system: deposit accounts and savings accounts.
+- Transactions: Transactions are used to transfer money between accounts.
+- Authentication and authorization: The system uses JWT tokens for authentication and authorization.
 
 ## Installation
-
-## Usage
 
 ## Class Diagram
 
