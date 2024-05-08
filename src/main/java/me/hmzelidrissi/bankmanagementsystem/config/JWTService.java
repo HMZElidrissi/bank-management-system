@@ -5,23 +5,35 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
 import java.time.Instant;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import static java.time.temporal.ChronoUnit.*;
 
 @Service
 public class JWTService {
-    private static final String SECRET_KEY = "secret";
+
+    @Value("${application.security.jwt.secret-key}")
+    private String SECRET_KEY;
+
+    private static final Logger logger = LoggerFactory.getLogger(JWTService.class);
 
     public String generateToken(UserDetails userDetails) {
-        return generateToken(userDetails, Map.of());
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", userDetails.getAuthorities()); // Add user roles to claims
+        claims.put("email", userDetails.getUsername());
+        return generateToken(claims, userDetails);
     }
 
     /**
@@ -30,7 +42,10 @@ public class JWTService {
      * @param claims the claims of the token
      * @return the generated token
      */
-    public String generateToken(UserDetails userDetails, Map<String, Object> claims) {
+    public String generateToken(
+            Map<String, Object> claims,
+            UserDetails userDetails
+            ) {
         return Jwts.builder()
                 .setSubject(userDetails.getUsername())
                 .setClaims(claims)
@@ -61,7 +76,9 @@ public class JWTService {
     }
 
     public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+        Claims claims = extractAllClaims(token);
+        // return extractClaim(token, Claims::getSubject);
+        return claims.get("email", String.class);
     }
 
     public Date extractExpiration(String token) {
@@ -70,11 +87,10 @@ public class JWTService {
 
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
-        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
+        return (username.equals(userDetails.getUsername())) && !isTokenExpired(token);
     }
 
     private boolean isTokenExpired(String token) {
-        Date expirationDate = extractExpiration(token);
-        return expirationDate.before(new Date());
+        return extractExpiration(token).before(new Date());
     }
 }
