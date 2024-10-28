@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-create-tables
+      author: hmzelidrissi
+      changes:
+          - createTable:
+              tableName: users
+              columns:
+                  - column:
+                      name: id
+                      type: BIGINT
+                      autoIncrement: true
+                      constraints:
+                          primaryKey: true
+                          nullable: false

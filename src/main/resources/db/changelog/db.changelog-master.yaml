@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - property:
+      name: now
+      value: now()
+      dbms: postgresql, h2
+  - property:
+      name: now
+      value: current_timestamp
+      dbms: mysql
+
+  # Include all the changelog files in the db/changelog directory
+  - include:
+      file: db/changelog/changes/001-create-tables.yml
