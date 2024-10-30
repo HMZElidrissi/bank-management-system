@@ -25,7 +25,9 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String email;
     private String password;
-    private String profilePicture;
+    private int age;
+    private double monthlyIncome;
+    private int creditScore;
     @Enumerated(EnumType.STRING)
     private Role role;
 

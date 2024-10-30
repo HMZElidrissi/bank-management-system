@@ -1,0 +1,51 @@
+databaseChangeLog:
+    - changeSet:
+          id: 001-create-users-table
+          author: system
+          changes:
+              - createTable:
+                    tableName: users
+                    columns:
+                        - column:
+                              name: id
+                              type: BIGINT
+                              autoIncrement: true
+                              constraints:
+                                  primaryKey: true
+                                  nullable: false
+                        - column:
+                              name: name
+                              type: VARCHAR(255)
+                              constraints:
+                                  nullable: false
+                        - column:
+                              name: email
+                              type: VARCHAR(255)
+                              constraints:
+                                  nullable: false
+                                  unique: true
+                        - column:
+                              name: password
+                              type: VARCHAR(255)
+                              constraints:
+                                  nullable: false
+                        - column:
+                              name: age
+                              type: INT
+                              constraints:
+                                  nullable: false
+                        - column:
+                              name: monthly_income
+                              type: DECIMAL(19,2)
+                              constraints:
+                                  nullable: false
+                        - column:
+                              name: credit_score
+                              type: INT
+                              constraints:
+                                  nullable: false
+                        - column:
+                              name: role
+                              type: VARCHAR(20)
+                              constraints:
+                                  nullable: false

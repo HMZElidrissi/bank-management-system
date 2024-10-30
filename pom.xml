@@ -144,6 +144,19 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>4.20.0</version>
+                <configuration>
+                    <driver>org.postgresql.Driver</driver>
+                    <url>jdbc:postgresql://localhost:5432/banking_db</url>
+                    <username>hamza</username>
+                    <password>hamza</password>
+                    <outputChangeLogFile>src/main/resources/db/changelog/master.yml</outputChangeLogFile>
+                    <diffTypes>tables,views,columns,indexes,foreignkeys,primarykeys,uniqueconstraints,sequences</diffTypes>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 

@@ -22,7 +22,7 @@ spring:
         format_sql: true
 
   liquibase:
-    change-log: classpath:db/changelog/db.changelog-master.yaml
+    change-log: classpath:db/changelog/master.yml
     enabled: true
     default-schema: public
     drop-first: false

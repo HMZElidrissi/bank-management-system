@@ -1,0 +1,20 @@
+databaseChangeLog:
+  - property:
+      name: now
+      value: now()
+      dbms: postgresql, h2
+  - property:
+      name: now
+      value: current_timestamp
+      dbms: mysql
+
+  - include:
+      file: db/changelog/changes/001-create-users-table.yml
+  - include:
+      file: db/changelog/changes/002-create-accounts-table.yml
+  - include:
+      file: db/changelog/changes/003-create-transactions-table.yml
+  - include:
+      file: db/changelog/changes/004-create-invoices-table.yml
+  - include:
+      file: db/changelog/changes/005-create-loans-table.yml
