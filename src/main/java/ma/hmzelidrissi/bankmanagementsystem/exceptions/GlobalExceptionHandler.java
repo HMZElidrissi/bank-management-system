@@ -28,7 +28,8 @@ public class GlobalExceptionHandler {
             HttpServletRequest request) {
         log.error("Unexpected error occurred", ex);
         return buildErrorResponseEntity(
-                new BaseException("An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR) {},
+                new BaseException("An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR) {
+                },
                 request
         );
     }

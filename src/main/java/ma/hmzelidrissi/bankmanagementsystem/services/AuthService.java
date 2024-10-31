@@ -5,7 +5,6 @@ import ma.hmzelidrissi.bankmanagementsystem.dtos.auth.SigninRequestDto;
 import ma.hmzelidrissi.bankmanagementsystem.dtos.auth.SignupRequestDto;
 
 public interface AuthService {
-
     AuthenticationResponseDto signup(SignupRequestDto request);
 
     AuthenticationResponseDto signin(SigninRequestDto request);

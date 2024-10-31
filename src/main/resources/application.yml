@@ -5,6 +5,7 @@ spring:
     import: optional:file:.env[.properties]
 
   datasource:
+    driver-class-name: org.postgresql.Driver
     url: ${DB_URL:jdbc:postgresql://localhost:5432/banking_db}
     username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD:root}

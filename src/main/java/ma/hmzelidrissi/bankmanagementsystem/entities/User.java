@@ -27,7 +27,7 @@ public class User implements UserDetails {
     private String password;
     private int age;
     private double monthlyIncome;
-    private int creditScore;
+    private int creditScore; // i.e. how creditworthy the user is
     @Enumerated(EnumType.STRING)
     private Role role;
 
