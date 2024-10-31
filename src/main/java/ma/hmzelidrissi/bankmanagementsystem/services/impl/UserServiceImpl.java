@@ -1,6 +1,7 @@
 package ma.hmzelidrissi.bankmanagementsystem.services.impl;
 
 import lombok.RequiredArgsConstructor;
+import ma.hmzelidrissi.bankmanagementsystem.dtos.PageResponse;
 import ma.hmzelidrissi.bankmanagementsystem.dtos.user.*;
 import ma.hmzelidrissi.bankmanagementsystem.entities.User;
 import ma.hmzelidrissi.bankmanagementsystem.enums.Role;
@@ -9,6 +10,9 @@ import ma.hmzelidrissi.bankmanagementsystem.exceptions.UserAlreadyExistsExceptio
 import ma.hmzelidrissi.bankmanagementsystem.mappers.UserMapper;
 import ma.hmzelidrissi.bankmanagementsystem.repositories.UserRepository;
 import ma.hmzelidrissi.bankmanagementsystem.services.UserService;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -52,12 +56,24 @@ public class UserServiceImpl implements UserService {
         return userMapper.toResponse(requestedUser);
     }
 
+    //    @Override
+//    @Transactional(readOnly = true)
+//    public List<UserResponseDTO> getAllUsers() {
+//        return userRepository.findAll().stream()
+//                .map(userMapper::toResponse)
+//                .toList();
+//    }
     @Override
     @Transactional(readOnly = true)
-    public List<UserResponseDTO> getAllUsers() {
-        return userRepository.findAll().stream()
-                .map(userMapper::toResponse)
-                .toList();
+    @Cacheable(value = "users", key = "#pageable")
+    public PageResponse<UserResponseDTO> getAllUsers(Pageable pageable) {
+        Page<User> userPage = userRepository.findAll(pageable);
+        return PageResponse.of(
+                userPage.getContent().stream()
+                        .map(userMapper::toResponse)
+                        .toList(),
+                userPage
+        );
     }
 
     @Override
@@ -84,12 +100,24 @@ public class UserServiceImpl implements UserService {
         return userMapper.toResponse(getCurrentUser());
     }
 
+    //    @Override
+//    @Transactional(readOnly = true)
+//    public List<UserSummaryDTO> getAllCustomers() {
+//        return userRepository.findAllByRole(Role.USER).stream()
+//                .map(userMapper::toSummary)
+//                .toList();
+//    }
     @Override
     @Transactional(readOnly = true)
-    public List<UserSummaryDTO> getAllCustomers() {
-        return userRepository.findAllByRole(Role.USER).stream()
-                .map(userMapper::toSummary)
-                .toList();
+    @Cacheable(value = "customers", key = "#pageable")
+    public PageResponse<UserSummaryDTO> getAllCustomers(Pageable pageable) {
+        Page<User> customerPage = userRepository.findAllByRole(Role.USER, pageable);
+        return PageResponse.of(
+                customerPage.getContent().stream()
+                        .map(userMapper::toSummary)
+                        .toList(),
+                customerPage
+        );
     }
 
     private User getCurrentUser() {

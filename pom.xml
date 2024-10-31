@@ -102,16 +102,6 @@
             <version>2.5.0</version>
         </dependency>
 
-        <!-- Cache -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-cache</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.ben-manes.caffeine</groupId>
-            <artifactId>caffeine</artifactId>
-        </dependency>
-
         <!-- Tests -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -158,14 +148,6 @@
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
                 <version>4.20.0</version>
-                <configuration>
-                    <driver>org.postgresql.Driver</driver>
-                    <url>jdbc:postgresql://localhost:5432/banking_db</url>
-                    <username>hamza</username>
-                    <password>hamza</password>
-                    <outputChangeLogFile>src/main/resources/db/changelog/master.yml</outputChangeLogFile>
-                    <diffTypes>tables,views,columns,indexes,foreignkeys,primarykeys,uniqueconstraints,sequences</diffTypes>
-                </configuration>
             </plugin>
         </plugins>
     </build>

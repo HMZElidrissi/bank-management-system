@@ -1,18 +1,15 @@
 package ma.hmzelidrissi.bankmanagementsystem.services;
 
-import ma.hmzelidrissi.bankmanagementsystem.dtos.user.CreateUserRequestDTO;
-import ma.hmzelidrissi.bankmanagementsystem.dtos.user.UpdateUserRequestDTO;
-import ma.hmzelidrissi.bankmanagementsystem.dtos.user.UserResponseDTO;
-import ma.hmzelidrissi.bankmanagementsystem.dtos.user.UserSummaryDTO;
-
-import java.util.List;
+import ma.hmzelidrissi.bankmanagementsystem.dtos.PageResponse;
+import ma.hmzelidrissi.bankmanagementsystem.dtos.user.*;
+import org.springframework.data.domain.Pageable;
 
 public interface UserService {
     UserResponseDTO createUser(CreateUserRequestDTO request);
 
     UserResponseDTO getUserById(Long id);
 
-    List<UserResponseDTO> getAllUsers();
+    PageResponse<UserResponseDTO> getAllUsers(Pageable pageable);
 
     UserResponseDTO updateUser(Long id, UpdateUserRequestDTO request);
 
@@ -20,5 +17,5 @@ public interface UserService {
 
     UserResponseDTO getCurrentUserProfile();
 
-    List<UserSummaryDTO> getAllCustomers();
+    PageResponse<UserSummaryDTO> getAllCustomers(Pageable pageable);
 }
