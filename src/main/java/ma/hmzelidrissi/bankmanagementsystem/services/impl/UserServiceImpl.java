@@ -19,8 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 @Transactional
@@ -31,12 +29,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDTO createUser(CreateUserRequestDTO request) {
-        if (userRepository.existsByEmail(request.getEmail())) {
+        if (userRepository.existsByEmail(request.email())) {
             throw new UserAlreadyExistsException("Email already exists");
         }
 
         User user = userMapper.toEntity(request);
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setPassword(passwordEncoder.encode(request.password()));
 
         User savedUser = userRepository.save(user);
         return userMapper.toResponse(savedUser);
@@ -56,13 +54,6 @@ public class UserServiceImpl implements UserService {
         return userMapper.toResponse(requestedUser);
     }
 
-    //    @Override
-//    @Transactional(readOnly = true)
-//    public List<UserResponseDTO> getAllUsers() {
-//        return userRepository.findAll().stream()
-//                .map(userMapper::toResponse)
-//                .toList();
-//    }
     @Override
     @Transactional(readOnly = true)
     @Cacheable(value = "users", key = "#pageable")
@@ -100,21 +91,15 @@ public class UserServiceImpl implements UserService {
         return userMapper.toResponse(getCurrentUser());
     }
 
-    //    @Override
-//    @Transactional(readOnly = true)
-//    public List<UserSummaryDTO> getAllCustomers() {
-//        return userRepository.findAllByRole(Role.USER).stream()
-//                .map(userMapper::toSummary)
-//                .toList();
-//    }
+
     @Override
     @Transactional(readOnly = true)
     @Cacheable(value = "customers", key = "#pageable")
-    public PageResponse<UserSummaryDTO> getAllCustomers(Pageable pageable) {
+    public PageResponse<UserResponseDTO> getAllCustomers(Pageable pageable) {
         Page<User> customerPage = userRepository.findAllByRole(Role.USER, pageable);
         return PageResponse.of(
                 customerPage.getContent().stream()
-                        .map(userMapper::toSummary)
+                        .map(userMapper::toResponse)
                         .toList(),
                 customerPage
         );

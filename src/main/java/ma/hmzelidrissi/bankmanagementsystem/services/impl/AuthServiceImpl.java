@@ -24,13 +24,13 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthenticationResponseDto signup(SignupRequestDto request) {
-        if (userRepository.existsByEmail(request.getEmail())) {
+        if (userRepository.existsByEmail(request.email())) {
             throw new RuntimeException("Email already exists");
         }
         var user = User.builder()
-                .name(request.getName())
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(request.getPassword()))
+                .name(request.name())
+                .email(request.email())
+                .password(passwordEncoder.encode(request.password()))
                 .role(Role.USER)
                 .build();
         userRepository.save(user);
@@ -47,12 +47,12 @@ public class AuthServiceImpl implements AuthService {
     public AuthenticationResponseDto signin(SigninRequestDto request) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
+                        request.email(),
+                        request.password()
                 )
         );
 
-        var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
+        var user = userRepository.findByEmail(request.email()).orElseThrow();
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponseDto.builder()
                 .token(jwtToken)

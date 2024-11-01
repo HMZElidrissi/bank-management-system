@@ -3,7 +3,6 @@ package ma.hmzelidrissi.bankmanagementsystem.mappers;
 import ma.hmzelidrissi.bankmanagementsystem.dtos.user.CreateUserRequestDTO;
 import ma.hmzelidrissi.bankmanagementsystem.dtos.user.UpdateUserRequestDTO;
 import ma.hmzelidrissi.bankmanagementsystem.dtos.user.UserResponseDTO;
-import ma.hmzelidrissi.bankmanagementsystem.dtos.user.UserSummaryDTO;
 import ma.hmzelidrissi.bankmanagementsystem.entities.User;
 import org.mapstruct.*;
 
@@ -21,6 +20,4 @@ public interface UserMapper {
     @Mapping(target = "password", ignore = true)
     @Mapping(target = "role", ignore = true)
     void updateUserFromRequest(UpdateUserRequestDTO request, @MappingTarget User user);
-
-    UserSummaryDTO toSummary(User user);
 }

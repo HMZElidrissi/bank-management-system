@@ -1,12 +1,10 @@
 package ma.hmzelidrissi.bankmanagementsystem.dtos.user;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ma.hmzelidrissi.bankmanagementsystem.enums.Role;
 
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

@@ -17,5 +17,5 @@ public interface UserService {
 
     UserResponseDTO getCurrentUserProfile();
 
-    PageResponse<UserSummaryDTO> getAllCustomers(Pageable pageable);
+    PageResponse<UserResponseDTO> getAllCustomers(Pageable pageable);
 }

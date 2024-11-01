@@ -6,15 +6,12 @@ import ma.hmzelidrissi.bankmanagementsystem.dtos.PageResponse;
 import ma.hmzelidrissi.bankmanagementsystem.dtos.user.CreateUserRequestDTO;
 import ma.hmzelidrissi.bankmanagementsystem.dtos.user.UpdateUserRequestDTO;
 import ma.hmzelidrissi.bankmanagementsystem.dtos.user.UserResponseDTO;
-import ma.hmzelidrissi.bankmanagementsystem.dtos.user.UserSummaryDTO;
 import ma.hmzelidrissi.bankmanagementsystem.services.UserService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -48,7 +45,7 @@ public class UserController {
 
     @GetMapping
     // @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<PageResponse<UserSummaryDTO>> getAllCustomers(
+    public ResponseEntity<PageResponse<UserResponseDTO>> getAllCustomers(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sortBy,
