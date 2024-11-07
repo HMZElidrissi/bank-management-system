@@ -13,6 +13,7 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private double balance;
+    @Enumerated(EnumType.STRING)
     private AccountStatus status;
     @ManyToOne
     @JoinColumn(name = "user_id")

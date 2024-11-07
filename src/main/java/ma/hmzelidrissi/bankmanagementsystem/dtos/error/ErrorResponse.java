@@ -2,7 +2,6 @@ package ma.hmzelidrissi.bankmanagementsystem.dtos.error;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +11,7 @@ import java.util.Map;
 @Getter
 @Setter
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.NON_NULL) // see https://www.baeldung.com/spring-remove-null-objects-json-response-jackson
 public class ErrorResponse {
     private LocalDateTime timestamp;
     private int status;              // HTTP status code

@@ -57,6 +57,21 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllCustomers(pageRequest));
     }
 
+    @GetMapping("/search")
+    // @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<PageResponse<UserResponseDTO>> searchUsers(
+            @RequestParam String query,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "asc") String sortDir) {
+
+        Sort.Direction direction = Sort.Direction.fromString(sortDir.toLowerCase());
+        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(direction, sortBy));
+
+        return ResponseEntity.ok(userService.searchUsers(query, pageRequest));
+    }
+
     /**
      * Employee endpoints
      */
@@ -75,7 +90,7 @@ public class UserController {
     }
 
     /**
-     * User (Customer) endpoints
+     * Customer endpoints
      */
     @GetMapping("/profile")
     public ResponseEntity<UserResponseDTO> getCurrentUserProfile() {

@@ -15,6 +15,8 @@ public interface UserService {
 
     void deleteUser(Long id);
 
+    PageResponse<UserResponseDTO> searchUsers(String query, Pageable pageable);
+
     UserResponseDTO getCurrentUserProfile();
 
     PageResponse<UserResponseDTO> getAllCustomers(Pageable pageable);
