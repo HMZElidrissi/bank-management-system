@@ -1,0 +1,54 @@
+databaseChangeLog:
+  - changeSet:
+      id: 007-create-transaction-approvals-table
+      author: system
+      changes:
+        - createTable:
+            tableName: transaction_approvals
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: transaction_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_approval_transaction
+                    references: transactions(id)
+              - column:
+                  name: approved_by
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_approval_user
+                    references: users(id)
+              - column:
+                  name: approved
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+              - column:
+                  name: comment
+                  type: VARCHAR(255)
+              - column:
+                  name: created_at
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+        - createIndex:
+            tableName: transaction_approvals
+            indexName: idx_transaction_approvals_transaction
+            columns:
+              - column:
+                  name: transaction_id
+        - createIndex:
+            tableName: transaction_approvals
+            indexName: idx_transaction_approvals_approved_by
+            columns:
+              - column:
+                  name: approved_by
