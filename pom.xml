@@ -20,6 +20,9 @@
         <java.version>17</java.version>
         <jsonwebtoken.version>0.11.5</jsonwebtoken.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
+        <lombok.version>1.18.34</lombok.version>
+        <springdoc-openapi-ui.version>2.5.0</springdoc-openapi-ui.version>
+        <liquibase.version>4.29.0</liquibase.version>
     </properties>
 
     <dependencies>
@@ -90,7 +93,7 @@
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
-            <version>4.29.0</version>
+            <version>${liquibase.version}</version>
         </dependency>
 
         <!-- Utilities -->
@@ -98,7 +101,7 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <optional>true</optional> <!-- we make it optional because it's not a runtime dependency, it's a compile-time dependency -->
-            <version>1.18.34</version>
+            <version>${lombok.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>
@@ -108,7 +111,7 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <version>2.5.0</version>
+            <version>${springdoc-openapi-ui.version}</version>
         </dependency>
 
         <!-- Tests -->
@@ -143,7 +146,7 @@
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
-                            <version>1.18.34</version>
+                            <version>${lombok.version}</version>
                         </path>
                         <path>
                             <groupId>org.mapstruct</groupId>
@@ -156,7 +159,7 @@
             <plugin>
                 <groupId>org.liquibase</groupId>
                 <artifactId>liquibase-maven-plugin</artifactId>
-                <version>4.20.0</version>
+                <version>${liquibase.version}</version>
             </plugin>
         </plugins>
     </build>
