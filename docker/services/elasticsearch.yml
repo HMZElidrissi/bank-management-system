@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   elasticsearch:
     image: elasticsearch:8.11.1
@@ -11,17 +12,23 @@ services:
       memlock:
         soft: -1
         hard: -1
-    ports:
-      - "9200:9200"
     volumes:
       - elasticsearch-data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
     networks:
-      - elastic
+      - banking-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200/_cluster/health | grep -q 'status.*green\\|status.*yellow'"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+
+networks:
+  banking-network:
+    driver: bridge
 
 volumes:
   elasticsearch-data:
     driver: local
-
-networks:
-  elastic:
-    driver: bridge

@@ -73,11 +73,6 @@
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
-        </dependency>
-
 
         <!-- Database -->
         <dependency>
@@ -95,12 +90,17 @@
             <artifactId>liquibase-core</artifactId>
             <version>${liquibase.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+        </dependency>
 
         <!-- Utilities -->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <optional>true</optional> <!-- we make it optional because it's not a runtime dependency, it's a compile-time dependency -->
+            <!-- we make it optional because it's not a runtime dependency, it's a compile-time dependency -->
+            <optional>true</optional>
             <version>${lombok.version}</version>
         </dependency>
         <dependency>
