@@ -80,7 +80,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<AccountResponseDTO> getMyAccounts() {
-        Long currentUserId = userService.getCurrentUserProfile().getId();
+        Long currentUserId = userService.getCurrentUserProfile().id();
         return getAccountsByUserId(currentUserId);
     }
 
