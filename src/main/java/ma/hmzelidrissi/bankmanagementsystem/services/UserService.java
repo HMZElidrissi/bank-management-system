@@ -2,6 +2,7 @@ package ma.hmzelidrissi.bankmanagementsystem.services;
 
 import ma.hmzelidrissi.bankmanagementsystem.dtos.PageResponse;
 import ma.hmzelidrissi.bankmanagementsystem.dtos.user.*;
+import ma.hmzelidrissi.bankmanagementsystem.entities.User;
 import org.springframework.data.domain.Pageable;
 
 public interface UserService {
@@ -15,7 +16,11 @@ public interface UserService {
 
     void deleteUser(Long id);
 
+    PageResponse<UserResponseDTO> searchUsers(String query, Pageable pageable);
+
     UserResponseDTO getCurrentUserProfile();
 
     PageResponse<UserResponseDTO> getAllCustomers(Pageable pageable);
+
+    User getCurrentUser();
 }

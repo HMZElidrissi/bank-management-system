@@ -1,6 +1,6 @@
 FROM maven:3.9.5-eclipse-temurin-17-alpine AS builder
 WORKDIR /app
-COPY . .
+COPY ../.. .
 RUN mvn clean package -DskipTests
 
 # Build the final image

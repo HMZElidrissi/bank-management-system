@@ -1,6 +1,7 @@
 package ma.hmzelidrissi.bankmanagementsystem.dtos;
 
 import lombok.*;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -17,7 +18,7 @@ public class PageResponse<T> {
     private int totalPages;
     private boolean last;
 
-    public static <T> PageResponse<T> of(List<T> content, org.springframework.data.domain.Page<?> page) {
+    public static <T> PageResponse<T> of(List<T> content, Page<?> page) {
         return PageResponse.<T>builder()
                 .content(content)
                 .pageNo(page.getNumber())

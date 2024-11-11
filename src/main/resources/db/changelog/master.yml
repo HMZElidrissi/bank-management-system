@@ -18,3 +18,9 @@ databaseChangeLog:
       file: db/changelog/changes/004-create-invoices-table.yml
   - include:
       file: db/changelog/changes/005-create-loans-table.yml
+  - include:
+      file: db/changelog/changes/006-update-transactions-table.yml
+  - include:
+      file: db/changelog/changes/007-create-transaction-approvals-table.yml
+  - include:
+      file: db/changelog/changes/008-create-recurring-transactions-table.yml

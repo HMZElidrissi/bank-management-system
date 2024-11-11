@@ -10,6 +10,13 @@ spring:
     username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD:root}
 
+  elasticsearch:
+      uris: ${ELASTICSEARCH_URI:localhost:9200}          # Base URL for Elasticsearch instance
+      connection-timeout: 5s               # Maximum time to establish connection
+      socket-timeout: 30s                 # Maximum time to wait for data
+      username:                           # Authentication username (empty - security disabled)
+      password:                           # Authentication password (empty - security disabled)
+
   h2:
     console:
       enabled: true

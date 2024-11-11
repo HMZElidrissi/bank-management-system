@@ -27,15 +27,15 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable) // AbstractHttpConfigurer::disable is a method reference to the disable method of the AbstractHttpConfigurer class
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(
-                                "/api/v1/auth/**",
-                                "/api/v1/**", // Allow all requests to /api/v1/**
-                                "/v2/api-docs",
-                                "/swagger-resources/**",
-                                "/swagger-ui/**",
-                                "/webjars/**",
-                                "/swagger-ui.html",
-                                "/v3/api-docs/**"
-                                        )
+                                        "/api/v1/auth/**",
+                                        "/api/v1/**", // Allow all requests to /api/v1/**
+                                        "/v2/api-docs",
+                                        "/swagger-resources/**",
+                                        "/swagger-ui/**",
+                                        "/webjars/**",
+                                        "/swagger-ui.html",
+                                        "/v3/api-docs/**"
+                                )
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated()

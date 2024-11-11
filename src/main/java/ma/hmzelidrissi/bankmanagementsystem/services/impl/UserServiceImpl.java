@@ -10,10 +10,8 @@ import ma.hmzelidrissi.bankmanagementsystem.exceptions.UserAlreadyExistsExceptio
 import ma.hmzelidrissi.bankmanagementsystem.mappers.UserMapper;
 import ma.hmzelidrissi.bankmanagementsystem.repositories.UserRepository;
 import ma.hmzelidrissi.bankmanagementsystem.services.UserService;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -56,7 +53,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "users", key = "#pageable")
     public PageResponse<UserResponseDTO> getAllUsers(Pageable pageable) {
         Page<User> userPage = userRepository.findAll(pageable);
         return PageResponse.of(
@@ -72,7 +68,7 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
-        userMapper.updateUserFromRequest(request, user);
+        userMapper.updateEntity(user, request);
         User updatedUser = userRepository.save(user);
         return userMapper.toResponse(updatedUser);
     }
@@ -87,6 +83,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
+    public PageResponse<UserResponseDTO> searchUsers(String query, Pageable pageable) {
+        Page<User> userPage = userRepository.searchByEmailOrName(query, pageable);
+        return PageResponse.of(
+                userPage.getContent().stream()
+                        .map(userMapper::toResponse)
+                        .toList(),
+                userPage
+        );
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public UserResponseDTO getCurrentUserProfile() {
         return userMapper.toResponse(getCurrentUser());
     }
@@ -94,7 +102,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    @Cacheable(value = "customers", key = "#pageable")
     public PageResponse<UserResponseDTO> getAllCustomers(Pageable pageable) {
         Page<User> customerPage = userRepository.findAllByRole(Role.USER, pageable);
         return PageResponse.of(
@@ -105,7 +112,8 @@ public class UserServiceImpl implements UserService {
         );
     }
 
-    private User getCurrentUser() {
+    @Override
+    public User getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));

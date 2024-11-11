@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    build: .
+    build: ..
     container_name: bank-management-system
     depends_on:
       - db
@@ -13,6 +13,7 @@ services:
       - DB_USERNAME=banking_user
       - DB_PASSWORD=banking_password
       - JWT_SECRET=4TUg6ciwT+vunAqvkNi/Y4N+XyrF570mECkSH/dxTKU=
+      - ELASTICSEARCH_URI=elasticsearch:9200
       - JAVA_OPTS=-Xmx512m -Xms256m
     ports:
       - "8082:8080" # Host:Container
@@ -25,8 +26,8 @@ services:
     container_name: banking-db
     environment:
       - POSTGRES_DB=banking_db
-      - POSTGRES_USER=banking_user
-      - POSTGRES_PASSWORD=banking_password
+      - POSTGRES_USER=hamza
+      - POSTGRES_PASSWORD=hamza
       - PGDATA=/var/lib/postgresql/data/pgdata
     ports:
       - "5432:5432"
@@ -34,6 +35,35 @@ services:
       - postgres-data:/var/lib/postgresql/data
     networks:
       - banking-network
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "hamza" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: unless-stopped
+
+  elasticsearch:
+    image: elasticsearch:8.11.1
+    container_name: banking-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - banking-network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9200" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
     restart: unless-stopped
 
 networks:
@@ -42,4 +72,6 @@ networks:
 
 volumes:
   postgres-data:
+    driver: local
+  elasticsearch-data:
     driver: local
