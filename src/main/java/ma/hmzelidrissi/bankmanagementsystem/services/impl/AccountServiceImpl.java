@@ -83,4 +83,10 @@ public class AccountServiceImpl implements AccountService {
         Long currentUserId = userService.getCurrentUserProfile().getId();
         return getAccountsByUserId(currentUserId);
     }
+
+    @Override
+    public Account getAccountById(Long id) {
+        return accountRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Account not found"));
+    }
 }

@@ -10,6 +10,37 @@ spring:
     username: ${DB_USERNAME:postgres}
     password: ${DB_PASSWORD:root}
 
+    # Elasticsearch Configuration
+    elasticsearch:
+      uris: http://localhost:9200
+      connection-timeout: 5s
+      socket-timeout: 30s
+      username: # empty since security is disabled
+      password: # empty since security is disabled
+
+    # Batch Configuration (for data migration)
+    batch:
+      job:
+        enabled: false # Don't run jobs automatically
+      initialize-schema: always
+      jdbc:
+        initialize-schema: always
+
+  # Elasticsearch Index Configuration
+  elasticsearch:
+    index:
+      name: transactions
+      shards: 1
+      replicas: 0
+      refresh-interval: "1s"
+    bulk:
+      size: 1000
+      concurrent: true
+      flush-interval: 5s
+      retry:
+        attempts: 3
+        delay: 1000
+
   h2:
     console:
       enabled: true
@@ -48,3 +79,12 @@ application:
   security:
     jwt:
       secret-key: ${JWT_SECRET_KEY:secret}
+
+  elasticsearch:
+    batch-size: 1000
+    max-retries: 3
+    initial-delay: 1000
+    max-delay: 10000
+    index-settings:
+      transient:
+        indices.memory.index_buffer_size: "512mb"

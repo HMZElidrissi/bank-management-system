@@ -4,6 +4,7 @@ import ma.hmzelidrissi.bankmanagementsystem.dtos.PageResponse;
 import ma.hmzelidrissi.bankmanagementsystem.dtos.account.AccountResponseDTO;
 import ma.hmzelidrissi.bankmanagementsystem.dtos.account.CreateAccountRequestDTO;
 import ma.hmzelidrissi.bankmanagementsystem.dtos.account.UpdateAccountRequestDTO;
+import ma.hmzelidrissi.bankmanagementsystem.entities.Account;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -22,4 +23,6 @@ public interface AccountService {
     List<AccountResponseDTO> getAccountsByUserId(Long userId);
 
     List<AccountResponseDTO> getMyAccounts();
+
+    Account getAccountById(Long id);
 }

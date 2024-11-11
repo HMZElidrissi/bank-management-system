@@ -11,7 +11,7 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
 
 /**
- * To access the OpenAPI documentation, go to http://localhost:8082/swagger-ui.html
+ * To access the OpenAPI documentation, go to <a href="http://localhost:8082/swagger-ui.html">...</a>
  * The @OpenAPIDefinition annotation is used to define the metadata of the OpenAPI specification.
  * The @SecurityScheme annotation is used to define a security scheme that can be used by the operations.
  */

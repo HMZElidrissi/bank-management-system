@@ -12,7 +12,6 @@ import ma.hmzelidrissi.bankmanagementsystem.repositories.UserRepository;
 import ma.hmzelidrissi.bankmanagementsystem.services.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -113,7 +112,8 @@ public class UserServiceImpl implements UserService {
         );
     }
 
-    private User getCurrentUser() {
+    @Override
+    public User getCurrentUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found"));
