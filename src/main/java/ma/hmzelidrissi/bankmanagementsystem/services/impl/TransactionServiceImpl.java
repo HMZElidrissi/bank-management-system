@@ -31,8 +31,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -109,6 +109,8 @@ public class TransactionServiceImpl implements TransactionService {
                     .description(transaction.getDescription())
                     .reference(transaction.getReference())
                     .createdAt(transaction.getCreatedAt())
+                    .recurring(transaction.getType() == TransactionType.STANDING_ORDER_INTERNAL ||
+                            transaction.getType() == TransactionType.STANDING_ORDER_EXTERNAL)
                     .build();
 
             elasticsearchRepository.save(document);
@@ -276,7 +278,7 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     private String generateReference() {
-        return UUID.randomUUID().toString();
+        return "TXN-" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
     }
 
     private LocalDateTime calculateNextExecutionDate(TransactionFrequency frequency) {

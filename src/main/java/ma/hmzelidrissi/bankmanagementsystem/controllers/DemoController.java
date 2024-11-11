@@ -33,6 +33,9 @@ public class DemoController {
         return "Hello from secured endpoint";
     }
 
+    /**
+     * The @Hidden annotation is used to hide an operation from the API documentation.
+     */
     @Hidden
     @GetMapping("/bye")
     public ResponseEntity<String> sayBye() {

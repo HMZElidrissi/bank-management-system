@@ -1,5 +1,7 @@
 package ma.hmzelidrissi.bankmanagementsystem.controllers;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import ma.hmzelidrissi.bankmanagementsystem.dtos.PageResponse;
@@ -9,13 +11,14 @@ import ma.hmzelidrissi.bankmanagementsystem.dtos.account.UpdateAccountRequestDTO
 import ma.hmzelidrissi.bankmanagementsystem.services.AccountService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/accounts")
+@Tag(name = "Account Management", description = "APIs for managing accounts")
 @RequiredArgsConstructor
 public class AccountController {
     private final AccountService accountService;
@@ -24,41 +27,49 @@ public class AccountController {
      * Admin endpoints
      */
     @PostMapping
+    @Operation(summary = "Create a new account")
+    @ResponseStatus(HttpStatus.CREATED)
     // @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<AccountResponseDTO> createAccount(@Valid @RequestBody CreateAccountRequestDTO request) {
-        return ResponseEntity.ok(accountService.createAccount(request));
+    public AccountResponseDTO createAccount(@Valid @RequestBody CreateAccountRequestDTO request) {
+        return accountService.createAccount(request);
     }
 
     @PutMapping("/{id}/status")
+    @Operation(summary = "Update account status")
+    @ResponseStatus(HttpStatus.OK)
     // @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<AccountResponseDTO> updateAccountStatus(
+    public AccountResponseDTO updateAccountStatus(
             @PathVariable Long id,
             @RequestBody UpdateAccountRequestDTO request) {
-        return ResponseEntity.ok(accountService.updateAccountStatus(id, request));
+        return accountService.updateAccountStatus(id, request);
     }
 
     @PutMapping("/{id}/balance")
+    @Operation(summary = "Update account balance")
+    @ResponseStatus(HttpStatus.OK)
     // @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<AccountResponseDTO> updateAccountBalance(
+    public AccountResponseDTO updateAccountBalance(
             @PathVariable Long id,
             @RequestBody UpdateAccountRequestDTO request) {
-        return ResponseEntity.ok(accountService.updateAccountBalance(id, request));
+        return accountService.updateAccountBalance(id, request);
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete account")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     // @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Void> deleteAccount(@PathVariable Long id) {
+    public void deleteAccount(@PathVariable Long id) {
         accountService.deleteAccount(id);
-        return ResponseEntity.noContent().build();
     }
 
     /**
      * Mutual Admin and Employee endpoints
      */
-
     @GetMapping
+    @Operation(summary = "Get all accounts")
+    @ResponseStatus(HttpStatus.OK)
     // @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
-    public ResponseEntity<PageResponse<AccountResponseDTO>> getAllAccounts(
+    public PageResponse<AccountResponseDTO> getAllAccounts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
             @RequestParam(defaultValue = "id") String sortBy,
@@ -67,21 +78,25 @@ public class AccountController {
         Sort.Direction direction = Sort.Direction.fromString(sortDir.toLowerCase());
         PageRequest pageRequest = PageRequest.of(page, size, Sort.by(direction, sortBy));
 
-        return ResponseEntity.ok(accountService.getAllAccounts(pageRequest));
+        return accountService.getAllAccounts(pageRequest);
     }
 
     @GetMapping("/{userId}")
+    @Operation(summary = "Get accounts by user ID")
+    @ResponseStatus(HttpStatus.OK)
     // @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
-    public ResponseEntity<List<AccountResponseDTO>> getAccountsByUserId(@PathVariable Long userId) {
-        return ResponseEntity.ok(accountService.getAccountsByUserId(userId));
+    public List<AccountResponseDTO> getAccountsByUserId(@PathVariable Long userId) {
+        return accountService.getAccountsByUserId(userId);
     }
 
     /**
      * Customer endpoints
      */
     @GetMapping("/my")
+    @Operation(summary = "Get my accounts")
+    @ResponseStatus(HttpStatus.OK)
     // @PreAuthorize("hasRole('CUSTOMER')")
-    public ResponseEntity<List<AccountResponseDTO>> getMyAccounts() {
-        return ResponseEntity.ok(accountService.getMyAccounts());
+    public List<AccountResponseDTO> getMyAccounts() {
+        return accountService.getMyAccounts();
     }
 }
