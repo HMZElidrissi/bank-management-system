@@ -77,6 +77,31 @@ public class GlobalExceptionHandler {
         );
     }
 
+    @ExceptionHandler(InsufficientFundsException.class)
+    public ResponseEntity<ErrorResponse> handleInsufficientFundsException(
+            InsufficientFundsException ex,
+            HttpServletRequest request) {
+        return buildErrorResponseEntity(ex, request);
+    }
+
+    @ExceptionHandler(IneligibleForLoanException.class)
+    public ResponseEntity<ErrorResponse> handleIneligibleForLoanException(
+            IneligibleForLoanException ex,
+            HttpServletRequest request) {
+        return buildErrorResponseEntity(ex, request);
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalStateException(
+            IllegalStateException ex,
+            HttpServletRequest request) {
+        return buildErrorResponseEntity(
+                new BaseException(ex.getMessage(), HttpStatus.BAD_REQUEST) {
+                },
+                request
+        );
+    }
+
     private ResponseEntity<ErrorResponse> buildErrorResponseEntity(
             BaseException ex,
             HttpServletRequest request) {
