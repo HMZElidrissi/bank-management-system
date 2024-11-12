@@ -1,0 +1,87 @@
+databaseChangeLog:
+  - changeSet:
+      id: 009-update-loans-table
+      author: system
+      changes:
+        - addColumn:
+            tableName: loans
+            columns:
+              - column:
+                  name: age
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: monthly_income
+                  type: DECIMAL(19,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: credit_score
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: debt_ratio
+                  type: DECIMAL(5,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: collateral_description
+                  type: VARCHAR(255)
+              - column:
+                  name: account_opening_date
+                  type: DATE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: DECIMAL(19,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: monthly_payment
+                  type: DECIMAL(19,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: reviewed_by
+                  type: BIGINT
+                  constraints:
+                    foreignKeyName: fk_loan_reviewer
+                    references: users(id)
+              - column:
+                  name: rejection_reason
+                  type: VARCHAR(255)
+              - column:
+                  name: status
+                  type: VARCHAR(20)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: start_date
+                  type: DATE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: end_date
+                  type: DATE
+                  constraints:
+                    nullable: false
+        - createIndex:
+            indexName: idx_loans_user_id
+            tableName: loans
+            columns:
+              - column:
+                  name: user_id
+        - createIndex:
+            indexName: idx_loans_status
+            tableName: loans
+            columns:
+              - column:
+                  name: status

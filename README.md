@@ -1,4 +1,4 @@
-# Bank Management Syste
+# Bank Management System
 
 A robust and secure banking management system built with Spring Boot and Angular, offering comprehensive banking operations with role-based access control.
 

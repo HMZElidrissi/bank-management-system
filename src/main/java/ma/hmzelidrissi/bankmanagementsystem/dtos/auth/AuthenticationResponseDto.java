@@ -3,14 +3,11 @@ package ma.hmzelidrissi.bankmanagementsystem.dtos.auth;
 import lombok.*;
 
 @Builder
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class AuthenticationResponseDto {
-    private String name;
-    private String email;
-    private String role;
-    private String token;
-    private String profilePicture;
+public record AuthenticationResponseDto(
+        String name,
+        String email,
+        String role,
+        String token,
+        String profilePicture
+) {
 }
