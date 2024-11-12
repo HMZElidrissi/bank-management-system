@@ -24,3 +24,5 @@ databaseChangeLog:
       file: db/changelog/changes/007-create-transaction-approvals-table.yml
   - include:
       file: db/changelog/changes/008-create-recurring-transactions-table.yml
+  - include:
+      file: db/changelog/changes/009-update-loans-table.yml
