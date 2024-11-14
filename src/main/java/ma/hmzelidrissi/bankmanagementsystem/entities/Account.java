@@ -8,6 +8,9 @@ import ma.hmzelidrissi.bankmanagementsystem.enums.AccountStatus;
 @Table(name = "accounts")
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
