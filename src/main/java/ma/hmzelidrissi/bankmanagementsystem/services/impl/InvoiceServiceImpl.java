@@ -67,8 +67,12 @@ public class InvoiceServiceImpl implements InvoiceService {
         return invoiceMapper.toDTO(invoice);
     }
 
+    /**
+     * cron <=> "second minute hour day month day-of-week"
+     * Available values: 0-59 0-59 0-23 1-31 1-12 0-7 or * for all values
+     */
     @Override
-    @Scheduled(cron = "0 0 0 0 0 0")
+    @Scheduled(cron = "0 0 0 * * *")
     public void processOverdueInvoices() {
         invoiceRepository.findByStatusAndDueDateBefore(InvoiceStatus.PENDING, LocalDate.now())
                 .forEach(invoice -> {
