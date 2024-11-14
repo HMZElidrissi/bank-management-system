@@ -25,7 +25,6 @@ public class AccountServiceImpl implements AccountService {
     private final AccountMapper accountMapper;
     private final UserService userService;
 
-
     @Override
     @Transactional(readOnly = true)
     public PageResponse<AccountResponseDTO> getAllAccounts(Pageable pageable) {
