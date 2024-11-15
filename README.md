@@ -76,6 +76,7 @@ cd bank-management-system
 ```
 
 2. **Configure application properties**
+- copy `.env.example` to `.env` and update the values
 - Update `application.yml` with your database credentials
 - Configure Elasticsearch connection details
 
