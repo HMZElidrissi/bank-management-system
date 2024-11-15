@@ -1,6 +1,6 @@
 # Bank Management System
 
-A robust and secure banking management system built with Spring Boot and Angular, offering comprehensive banking operations with role-based access control.
+A robust banking management system built with Spring Boot and Angular, this repository serves as a guide and foundation of best practices for building enterprise-grade applications.
 
 ## 🚀 Features
 
@@ -35,12 +35,6 @@ A robust and secure banking management system built with Spring Boot and Angular
 - Recurring payment setup
 - Payment history tracking
 - Bill reminder notifications
-
-### Analytics and Reporting
-- Transaction analytics
-- Account statements
-- Financial reports
-- Audit logging
 
 ## 🛠 Tech Stack
 
@@ -112,26 +106,3 @@ The API documentation is available through Swagger UI. After starting the applic
 ```
 http://localhost:8080/swagger-ui.html
 ```
-
-## 🔑 Role-Based Access
-
-### ADMIN
-- Full system access
-- User management
-- Account management
-- Transaction approval
-- Loan approval
-- System configuration
-
-### USER (Customer)
-- Personal account management
-- Transaction operations
-- Loan requests
-- Bill payments
-- Statement viewing
-
-### EMPLOYEE
-- Customer account viewing
-- Transaction processing
-- Loan application processing
-- Customer support operations
