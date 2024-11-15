@@ -94,6 +94,12 @@ Or **Run without Docker**
 ./mvnw spring-boot:run
 ```
 
+> to run a service separately, run the following command for example:
+```bash
+docker-compose -f docker/services/postgres.yml up
+docker-compose -f docker/services/elasticsearch.yml up
+```
+
 5. **Access the application**
 - Backend API: http://localhost:8080
 - Swagger UI: http://localhost:8080/swagger-ui.html
