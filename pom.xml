@@ -20,7 +20,6 @@
         <java.version>17</java.version>
         <jsonwebtoken.version>0.11.5</jsonwebtoken.version>
         <mapstruct.version>1.5.5.Final</mapstruct.version>
-        <lombok.version>1.18.34</lombok.version>
         <springdoc-openapi-ui.version>2.5.0</springdoc-openapi-ui.version>
         <liquibase.version>4.29.0</liquibase.version>
     </properties>

@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
@@ -19,17 +20,19 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(BaseException.class)
-    public ResponseEntity<ErrorResponse> handleBaseException(
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleBaseException(
             BaseException ex,
             HttpServletRequest request) {
 
         log.error("Handling {} - Message: {}", ex.getClass().getSimpleName(), ex.getMessage());
 
-        return buildErrorResponseEntity(ex, request);
+        return buildErrorResponse(ex, request);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse> handleValidationExceptions(
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleValidationExceptions(
             MethodArgumentNotValidException ex,
             HttpServletRequest request) {
 
@@ -42,7 +45,7 @@ public class GlobalExceptionHandler {
             validationErrors.put(fieldName, errorMessage);
         });
 
-        ErrorResponse error = ErrorResponse.builder()
+        return ErrorResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.BAD_REQUEST.value())
                 .error("Validation Failed")
@@ -50,69 +53,85 @@ public class GlobalExceptionHandler {
                 .path(request.getRequestURI())
                 .validationErrors(validationErrors)
                 .build();
-
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(UserAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponse> handleUserAlreadyExistsException(
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ErrorResponse handleUserAlreadyExistsException(
             UserAlreadyExistsException ex,
             HttpServletRequest request) {
-        return buildErrorResponseEntity(
-                new BaseException(ex.getMessage(), HttpStatus.CONFLICT) {
-                },
+        return buildErrorResponse(
+                ex,
                 request
         );
     }
 
+    /**
+     * Exception is the superclass of all exceptions in Java. It is checked exception and it is thrown when an exceptional condition has occurred in an application.
+     *
+     * @param ex
+     * @param request
+     * @return ErrorResponse
+     */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGenericException(
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ErrorResponse handleGenericException(
             Exception ex,
             HttpServletRequest request) {
         log.error("Unexpected error occurred", ex);
-        return buildErrorResponseEntity(
-                new BaseException("An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR) {
-                },
-                request
-        );
+        return ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .error(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase())
+                .message("An unexpected error occurred")
+                .path(request.getRequestURI())
+                .build();
     }
 
     @ExceptionHandler(InsufficientFundsException.class)
-    public ResponseEntity<ErrorResponse> handleInsufficientFundsException(
+    public ErrorResponse handleInsufficientFundsException(
             InsufficientFundsException ex,
             HttpServletRequest request) {
-        return buildErrorResponseEntity(ex, request);
+        return buildErrorResponse(ex, request);
     }
 
     @ExceptionHandler(IneligibleForLoanException.class)
-    public ResponseEntity<ErrorResponse> handleIneligibleForLoanException(
+    public ErrorResponse handleIneligibleForLoanException(
             IneligibleForLoanException ex,
             HttpServletRequest request) {
-        return buildErrorResponseEntity(ex, request);
+        return buildErrorResponse(ex, request);
     }
 
+    /**
+     * IllegalStateException is an unchecked exception that is thrown when a method is called at an illegal or inappropriate time. for example, when the method is called with an illegal argument or when the object is in an inappropriate state for the method call.
+     *
+     * @param ex
+     * @param request
+     * @return ErrorResponse
+     */
     @ExceptionHandler(IllegalStateException.class)
-    public ResponseEntity<ErrorResponse> handleIllegalStateException(
+    public ErrorResponse handleIllegalStateException(
             IllegalStateException ex,
             HttpServletRequest request) {
-        return buildErrorResponseEntity(
-                new BaseException(ex.getMessage(), HttpStatus.BAD_REQUEST) {
-                },
-                request
-        );
+        return ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error(HttpStatus.BAD_REQUEST.getReasonPhrase())
+                .message(ex.getMessage())
+                .path(request.getRequestURI())
+                .build();
     }
 
-    private ResponseEntity<ErrorResponse> buildErrorResponseEntity(
+    private ErrorResponse buildErrorResponse(
             BaseException ex,
             HttpServletRequest request) {
-        ErrorResponse error = ErrorResponse.builder()
+
+        return ErrorResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .status(ex.getStatus().value())
                 .error(ex.getStatus().getReasonPhrase())
                 .message(ex.getMessage())
                 .path(request.getRequestURI())
                 .build();
-
-        return new ResponseEntity<>(error, ex.getStatus());
     }
 }
