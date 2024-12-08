@@ -29,15 +29,23 @@ spring:
       hibernate:
         format_sql: true
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          secret-key: ${JWT_SECRET_KEY:secret}
+          private-key: classpath:app.private.key
+          public-key: classpath:app.public.key
+
   liquibase:
     change-log: classpath:db/changelog/master.yml
-    enabled: true
+    enabled: false
     default-schema: public
     drop-first: false
 
 logging:
   level:
-    com.banking: DEBUG
+    ma.hmzelidrissi.bankmanagementsystem: DEBUG
     org.springframework: INFO
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
@@ -52,6 +60,7 @@ server:
     include-binding-errors: always
 
 application:
-  security:
-    jwt:
-      secret-key: ${JWT_SECRET_KEY:secret}
+  jwt:
+    cookie:
+      name: jwt-token
+      expiry: 86400  # 24 hours in seconds

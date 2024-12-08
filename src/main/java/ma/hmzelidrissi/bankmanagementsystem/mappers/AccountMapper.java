@@ -12,7 +12,6 @@ import org.mapstruct.*;
         componentModel = "spring",
         imports = {AccountStatus.class}
 )
-
 public interface AccountMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "balance", source = "initialBalance")

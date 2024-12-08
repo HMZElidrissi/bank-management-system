@@ -1,26 +1,48 @@
 package ma.hmzelidrissi.bankmanagementsystem.services.impl;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jose.jws.SignatureAlgorithm;
+import org.springframework.security.oauth2.jwt.JwsHeader;
+import org.springframework.security.oauth2.jwt.JwtClaimsSet;
+import org.springframework.security.oauth2.jwt.JwtEncoder;
+import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
+import org.springframework.stereotype.Service;
+
 import lombok.RequiredArgsConstructor;
-import ma.hmzelidrissi.bankmanagementsystem.config.JWTService;
 import ma.hmzelidrissi.bankmanagementsystem.dtos.auth.AuthenticationResponseDto;
 import ma.hmzelidrissi.bankmanagementsystem.dtos.auth.SigninRequestDto;
 import ma.hmzelidrissi.bankmanagementsystem.dtos.auth.SignupRequestDto;
 import ma.hmzelidrissi.bankmanagementsystem.entities.User;
 import ma.hmzelidrissi.bankmanagementsystem.enums.Role;
-import ma.hmzelidrissi.bankmanagementsystem.services.AuthService;
 import ma.hmzelidrissi.bankmanagementsystem.repositories.UserRepository;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
+import ma.hmzelidrissi.bankmanagementsystem.services.AuthService;
 
 @Service
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JWTService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final JwtEncoder jwtEncoder;
+
+    private String generateToken(User user) {
+        JwtClaimsSet claims = JwtClaimsSet.builder()
+                .issuer("bank-management-system")
+                .issuedAt(Instant.now())
+                .expiresAt(Instant.now().plus(15, ChronoUnit.DAYS))
+                .subject(user.getEmail())
+                .claim("role", user.getRole())
+                .build();
+
+        JwsHeader jwsHeader = JwsHeader.with(SignatureAlgorithm.RS256).build();
+
+        return jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims)).getTokenValue();
+    }
 
     @Override
     public AuthenticationResponseDto signup(SignupRequestDto request) {
@@ -34,7 +56,7 @@ public class AuthServiceImpl implements AuthService {
                 .role(Role.USER)
                 .build();
         userRepository.save(user);
-        var jwtToken = jwtService.generateToken(user);
+        var jwtToken = generateToken(user);
         return AuthenticationResponseDto.builder()
                 .token(jwtToken)
                 .name(user.getName())
@@ -52,8 +74,10 @@ public class AuthServiceImpl implements AuthService {
                 )
         );
 
-        var user = userRepository.findByEmail(request.email()).orElseThrow();
-        var jwtToken = jwtService.generateToken(user);
+        var user = userRepository.findByEmail(request.email()).orElseThrow(
+                () -> new RuntimeException("User not found")
+        );
+        var jwtToken = generateToken(user);
         return AuthenticationResponseDto.builder()
                 .token(jwtToken)
                 .name(user.getName())
