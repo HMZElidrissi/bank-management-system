@@ -1,16 +1,15 @@
 package ma.hmzelidrissi.bankmanagementsystem.controllers;
 
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import ma.hmzelidrissi.bankmanagementsystem.dtos.auth.AuthenticationResponseDto;
 import ma.hmzelidrissi.bankmanagementsystem.dtos.auth.SigninRequestDto;
 import ma.hmzelidrissi.bankmanagementsystem.dtos.auth.SignupRequestDto;
 import ma.hmzelidrissi.bankmanagementsystem.services.AuthService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/auth")
@@ -20,16 +19,26 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<AuthenticationResponseDto> signup(
-            @Valid @RequestBody SignupRequestDto request
+    @ResponseStatus(HttpStatus.OK)
+    public AuthenticationResponseDto signup(
+            @Valid @RequestBody SignupRequestDto request,
+            HttpServletResponse response
     ) {
-        return ResponseEntity.ok(authService.signup(request));
+        return authService.signup(request, response);
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<AuthenticationResponseDto> signin(
-            @Valid @RequestBody SigninRequestDto request
+    @ResponseStatus(HttpStatus.OK)
+    public AuthenticationResponseDto signin(
+            @Valid @RequestBody SigninRequestDto request,
+            HttpServletResponse response
     ) {
-        return ResponseEntity.ok(authService.signin(request));
+        return authService.signin(request, response);
+    }
+
+    @PostMapping("/signout")
+    @ResponseStatus(HttpStatus.OK)
+    public void signout(HttpServletResponse response) {
+        authService.signout(response);
     }
 }

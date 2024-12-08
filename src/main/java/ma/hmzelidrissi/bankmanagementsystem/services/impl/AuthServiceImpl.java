@@ -3,6 +3,8 @@ package ma.hmzelidrissi.bankmanagementsystem.services.impl;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 
+import jakarta.servlet.http.HttpServletResponse;
+import ma.hmzelidrissi.bankmanagementsystem.config.CookieUtil;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,6 +31,7 @@ public class AuthServiceImpl implements AuthService {
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtEncoder jwtEncoder;
+    private final CookieUtil cookieUtil;
 
     private String generateToken(User user) {
         JwtClaimsSet claims = JwtClaimsSet.builder()
@@ -45,7 +48,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public AuthenticationResponseDto signup(SignupRequestDto request) {
+    public AuthenticationResponseDto signup(SignupRequestDto request, HttpServletResponse response) {
         if (userRepository.existsByEmail(request.email())) {
             throw new RuntimeException("Email already exists");
         }
@@ -56,9 +59,11 @@ public class AuthServiceImpl implements AuthService {
                 .role(Role.USER)
                 .build();
         userRepository.save(user);
+
         var jwtToken = generateToken(user);
+        cookieUtil.createCookie(response, jwtToken);
+
         return AuthenticationResponseDto.builder()
-                .token(jwtToken)
                 .name(user.getName())
                 .email(user.getEmail())
                 .role(String.valueOf(user.getRole()))
@@ -66,7 +71,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public AuthenticationResponseDto signin(SigninRequestDto request) {
+    public AuthenticationResponseDto signin(SigninRequestDto request, HttpServletResponse response) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.email(),
@@ -77,12 +82,19 @@ public class AuthServiceImpl implements AuthService {
         var user = userRepository.findByEmail(request.email()).orElseThrow(
                 () -> new RuntimeException("User not found")
         );
+
         var jwtToken = generateToken(user);
+        cookieUtil.createCookie(response, jwtToken);
+
         return AuthenticationResponseDto.builder()
-                .token(jwtToken)
                 .name(user.getName())
                 .email(user.getEmail())
                 .role(String.valueOf(user.getRole()))
                 .build();
+    }
+
+    @Override
+    public void signout(HttpServletResponse response) {
+        cookieUtil.clearCookie(response);
     }
 }
