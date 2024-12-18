@@ -84,6 +84,12 @@ cd bank-management-system
 docker-compose up
 ```
 
+> to run a dingle service separately, run the following command for example:
+```bash
+docker-compose -f docker/services/postgres.yml up
+docker-compose -f docker/services/elasticsearch.yml up
+```
+
 Or **Run without Docker**
 ```bash
 ./mvnw spring-boot:run
