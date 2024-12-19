@@ -1,17 +1,23 @@
-version: '3.8'
+x-project:
+  name: bank-management-system
+  description: Banking Management System
 
 services:
   app:
-    build: ..
+    build:
+      context: ..
+      dockerfile: docker/services/Dockerfile
     container_name: bank-management-system
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       - DB_HOST=db
       - DB_PORT=5432
       - DB_NAME=banking_db
-      - DB_USERNAME=banking_user
-      - DB_PASSWORD=banking_password
+      - DB_URL=jdbc:postgresql://db:5432/banking_db
+      - DB_USERNAME=hamza
+      - DB_PASSWORD=hamza
       - JWT_SECRET=4TUg6ciwT+vunAqvkNi/Y4N+XyrF570mECkSH/dxTKU=
       - ELASTICSEARCH_URI=elasticsearch:9200
       - JAVA_OPTS=-Xmx512m -Xms256m
@@ -23,7 +29,7 @@ services:
 
   db:
     image: postgres:17-alpine
-    container_name: banking-db
+    container_name: bms-db
     environment:
       - POSTGRES_DB=banking_db
       - POSTGRES_USER=hamza
@@ -44,7 +50,7 @@ services:
 
   elasticsearch:
     image: elasticsearch:8.11.1
-    container_name: banking-elasticsearch
+    container_name: bms-elasticsearch
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false

@@ -33,7 +33,6 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          secret-key: ${JWT_SECRET_KEY:secret}
           private-key: classpath:app.private.key
           public-key: classpath:app.public.key
 
