@@ -5,7 +5,6 @@ pipeline {
 
     environment {
         DOCKERHUB_CREDENTIALS = credentials('docker-credentials')
-        SONAR_PROJECT_KEY = 'bank-management-system'
     }
 
     tools {
@@ -43,7 +42,7 @@ pipeline {
                 withSonarQubeEnv('SonarQube') {
                     sh """
                     mvn sonar:sonar \
-                    -Dsonar.host.url=http://172.21.0.2:9000 \
+                    -Dsonar.host.url=http://host.docker.internal:9000 \
                     -Dsonar.projectKey=bank-management-system \
                     -Dsonar.java.coveragePlugin=jacoco \
                     -Dsonar.coverage.jacoco.xmlReportPaths=target/site/jacoco/jacoco.xml
