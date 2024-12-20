@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   sonarqube:
-    image: sonarqube:9-developer
+    image: sonarqube:9-community
     ports:
       - "9000:9000"
     environment:
