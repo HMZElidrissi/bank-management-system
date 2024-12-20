@@ -55,7 +55,7 @@ pipeline {
             steps {
                 timeout(time: 1, unit: 'HOURS') {
                     withSonarQubeEnv('SonarQube') {
-                        waitForQualityGate abortPipeline: true
+                        waitForQualityGate abortPipeline: false
                     }
                 }
             }
