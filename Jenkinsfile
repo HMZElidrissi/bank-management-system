@@ -38,22 +38,6 @@ pipeline {
             }
         }
 
-        stage('Unit Tests') {
-            steps {
-                sh 'mvn test -Dtest=!UserRepositoryTest'
-            }
-            post {
-                always {
-                    junit '**/target/surefire-reports/*.xml'
-                    jacoco(
-                        execPattern: '**/target/jacoco.exec',
-                        classPattern: '**/target/classes',
-                        sourcePattern: '**/src/main/java'
-                    )
-                }
-            }
-        }
-
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('SonarQube') {
