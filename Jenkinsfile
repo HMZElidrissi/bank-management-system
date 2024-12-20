@@ -8,11 +8,6 @@ pipeline {
         SONAR_PROJECT_KEY = 'bank-management-system'
     }
 
-    tools {
-        maven 'Maven'
-        jdk 'JDK17'
-    }
-
     stages {
         stage('Prepare Version') {
             steps {
