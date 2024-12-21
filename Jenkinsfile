@@ -54,7 +54,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    docker.build("hmzelidrissi/bank-management-system:${env.NEW_VERSION}", "docker/services")
+                    docker.build("hmzelidrissi/bank-management-system:${env.NEW_VERSION}", "-f docker/services/Dockerfile .")
                 }
             }
         }

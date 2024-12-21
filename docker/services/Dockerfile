@@ -1,12 +1,12 @@
 FROM maven:3.9.5-eclipse-temurin-17-alpine AS builder
 WORKDIR /app
-# Copy the POM file first to leverage Docker cache for dependencies
-COPY pom.xml .
-# Download dependencies (this layer will be cached if pom.xml doesn't change)
+# Copy the POM file from root directory
+COPY ../../pom.xml .
+# Download dependencies
 RUN mvn dependency:go-offline
 
-# Copy the rest of the project
-COPY src ./src
+# Copy the source code from root directory
+COPY ../../src ./src
 
 # Package the application
 RUN mvn clean package -DskipTests
