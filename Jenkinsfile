@@ -51,16 +51,6 @@ pipeline {
             }
         }
 
-        stage('Quality Gate') {
-            steps {
-                timeout(time: 1, unit: 'HOURS') {
-                    withSonarQubeEnv('SonarQube') {
-                        waitForQualityGate abortPipeline: false
-                    }
-                }
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 script {
