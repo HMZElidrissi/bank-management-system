@@ -16,7 +16,7 @@ public class CookieUtil {
 
     public void createCookie(HttpServletResponse response, String token) {
         Cookie cookie = new Cookie(cookieName, token);
-        cookie.setHttpOnly(true);
+        cookie.setHttpOnly(true); // HttpOnly flag makes sure that the cookie is not accessible via JavaScript
         // cookie.setSecure(true); # Uncomment this line when deploying to production
         cookie.setPath("/");
         cookie.setMaxAge(cookieExpiry);
@@ -26,7 +26,7 @@ public class CookieUtil {
     public void clearCookie(HttpServletResponse response) {
         Cookie cookie = new Cookie(cookieName, null);
         cookie.setHttpOnly(true);
-        cookie.setSecure(true);
+        // cookie.setSecure(true);
         cookie.setPath("/");
         cookie.setMaxAge(0);
         response.addCookie(cookie);

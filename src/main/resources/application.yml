@@ -7,8 +7,8 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     url: ${DB_URL:jdbc:postgresql://localhost:5432/banking_db}
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:root}
+    username: ${DB_USERNAME:hamza}
+    password: ${DB_PASSWORD:hamza}
 
   elasticsearch:
       uris: ${ELASTICSEARCH_URI:localhost:9200}          # Base URL for Elasticsearch instance
