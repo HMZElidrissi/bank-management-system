@@ -39,7 +39,7 @@ public class AuthServiceImpl implements AuthService {
                 .issuedAt(Instant.now())
                 .expiresAt(Instant.now().plus(15, ChronoUnit.DAYS))
                 .subject(user.getEmail())
-                .claim("role", user.getRole())
+                .claim("role", user.getRole().name())
                 .build();
 
         JwsHeader jwsHeader = JwsHeader.with(SignatureAlgorithm.RS256).build();

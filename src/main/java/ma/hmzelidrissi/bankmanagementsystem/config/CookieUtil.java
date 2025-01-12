@@ -19,6 +19,7 @@ public class CookieUtil {
         cookie.setHttpOnly(true); // HttpOnly flag makes sure that the cookie is not accessible via JavaScript
         // cookie.setSecure(true); # Uncomment this line when deploying to production
         cookie.setPath("/");
+        cookie.setDomain("localhost");
         cookie.setMaxAge(cookieExpiry);
         response.addCookie(cookie);
     }

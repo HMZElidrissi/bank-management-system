@@ -10,13 +10,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/invoices")
 @Tag(name = "Invoices Management", description = "APIs for managing invoices")
 @RequiredArgsConstructor
-// @PreAuthorize("hasRole('USER')")
+ @PreAuthorize("hasRole('USER')")
 public class InvoiceController {
     private final InvoiceService invoiceService;
 

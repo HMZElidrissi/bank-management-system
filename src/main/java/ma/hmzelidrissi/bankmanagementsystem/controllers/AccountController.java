@@ -12,6 +12,7 @@ import ma.hmzelidrissi.bankmanagementsystem.services.AccountService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class AccountController {
     @PostMapping
     @Operation(summary = "Create a new account")
     @ResponseStatus(HttpStatus.CREATED)
-    // @PreAuthorize("hasRole('ADMIN')")
+     @PreAuthorize("hasRole('ADMIN')")
     public AccountResponseDTO createAccount(@Valid @RequestBody CreateAccountRequestDTO request) {
         return accountService.createAccount(request);
     }
@@ -37,7 +38,7 @@ public class AccountController {
     @PutMapping("/{id}/status")
     @Operation(summary = "Update account status")
     @ResponseStatus(HttpStatus.OK)
-    // @PreAuthorize("hasRole('ADMIN')")
+     @PreAuthorize("hasRole('ADMIN')")
     public AccountResponseDTO updateAccountStatus(
             @PathVariable Long id,
             @RequestBody UpdateAccountRequestDTO request) {
@@ -47,7 +48,7 @@ public class AccountController {
     @PutMapping("/{id}/balance")
     @Operation(summary = "Update account balance")
     @ResponseStatus(HttpStatus.OK)
-    // @PreAuthorize("hasRole('ADMIN')")
+     @PreAuthorize("hasRole('ADMIN')")
     public AccountResponseDTO updateAccountBalance(
             @PathVariable Long id,
             @RequestBody UpdateAccountRequestDTO request) {
@@ -57,7 +58,7 @@ public class AccountController {
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete account")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    // @PreAuthorize("hasRole('ADMIN')")
+     @PreAuthorize("hasRole('ADMIN')")
     public void deleteAccount(@PathVariable Long id) {
         accountService.deleteAccount(id);
     }
@@ -68,7 +69,7 @@ public class AccountController {
     @GetMapping
     @Operation(summary = "Get all accounts")
     @ResponseStatus(HttpStatus.OK)
-    // @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
+     @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
     public PageResponse<AccountResponseDTO> getAllAccounts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -84,7 +85,7 @@ public class AccountController {
     @GetMapping("/{userId}")
     @Operation(summary = "Get accounts by user ID")
     @ResponseStatus(HttpStatus.OK)
-    // @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
+     @PreAuthorize("hasAnyRole('ADMIN', 'EMPLOYEE')")
     public List<AccountResponseDTO> getAccountsByUserId(@PathVariable Long userId) {
         return accountService.getAccountsByUserId(userId);
     }
@@ -95,7 +96,7 @@ public class AccountController {
     @GetMapping("/my")
     @Operation(summary = "Get my accounts")
     @ResponseStatus(HttpStatus.OK)
-    // @PreAuthorize("hasRole('CUSTOMER')")
+     @PreAuthorize("hasRole('USER')")
     public List<AccountResponseDTO> getMyAccounts() {
         return accountService.getMyAccounts();
     }

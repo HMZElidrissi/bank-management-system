@@ -8,7 +8,6 @@ import ma.hmzelidrissi.bankmanagementsystem.dtos.auth.SigninRequestDto;
 import ma.hmzelidrissi.bankmanagementsystem.dtos.auth.SignupRequestDto;
 import ma.hmzelidrissi.bankmanagementsystem.services.AuthService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
