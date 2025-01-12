@@ -1,14 +1,12 @@
 package ma.hmzelidrissi.bankmanagementsystem.entities;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 import lombok.*;
-import ma.hmzelidrissi.bankmanagementsystem.enums.TransactionFrequency;
 import ma.hmzelidrissi.bankmanagementsystem.enums.TransactionStatus;
 import ma.hmzelidrissi.bankmanagementsystem.enums.TransactionType;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "transactions")
