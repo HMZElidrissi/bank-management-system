@@ -17,49 +17,48 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/invoices")
 @Tag(name = "Invoices Management", description = "APIs for managing invoices")
 @RequiredArgsConstructor
- @PreAuthorize("hasRole('USER')")
+@PreAuthorize("hasRole('USER')")
 public class InvoiceController {
-    private final InvoiceService invoiceService;
+  private final InvoiceService invoiceService;
 
-    @PostMapping
-    @Operation(summary = "Create a new invoice")
-    @ResponseStatus(HttpStatus.CREATED)
-    public InvoiceResponseDTO createInvoice(CreateInvoiceRequestDTO request) {
-        return invoiceService.createInvoice(request);
-    }
+  @PostMapping
+  @Operation(summary = "Create a new invoice")
+  @ResponseStatus(HttpStatus.CREATED)
+  public InvoiceResponseDTO createInvoice(CreateInvoiceRequestDTO request) {
+    return invoiceService.createInvoice(request);
+  }
 
-    @GetMapping("/{id}")
-    @Operation(summary = "Get invoice by ID")
-    @ResponseStatus(HttpStatus.OK)
-    public InvoiceResponseDTO getInvoiceById(@PathVariable Long id) {
-        return invoiceService.getInvoiceById(id);
-    }
+  @GetMapping("/{id}")
+  @Operation(summary = "Get invoice by ID")
+  @ResponseStatus(HttpStatus.OK)
+  public InvoiceResponseDTO getInvoiceById(@PathVariable Long id) {
+    return invoiceService.getInvoiceById(id);
+  }
 
-    @GetMapping("/my")
-    @Operation(summary = "Get my invoices")
-    @ResponseStatus(HttpStatus.OK)
-    public Page<InvoiceResponseDTO> getMyInvoices(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy,
-            @RequestParam(defaultValue = "asc") String sortDir
-    ) {
-        Sort.Direction direction = Sort.Direction.fromString(sortDir.toLowerCase());
-        PageRequest pageRequest = PageRequest.of(page, size, Sort.by(direction, sortBy));
-        return invoiceService.getMyInvoices(pageRequest);
-    }
+  @GetMapping("/my")
+  @Operation(summary = "Get my invoices")
+  @ResponseStatus(HttpStatus.OK)
+  public Page<InvoiceResponseDTO> getMyInvoices(
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size,
+      @RequestParam(defaultValue = "id") String sortBy,
+      @RequestParam(defaultValue = "asc") String sortDir) {
+    Sort.Direction direction = Sort.Direction.fromString(sortDir.toLowerCase());
+    PageRequest pageRequest = PageRequest.of(page, size, Sort.by(direction, sortBy));
+    return invoiceService.getMyInvoices(pageRequest);
+  }
 
-    @PutMapping("/{id}/pay")
-    @Operation(summary = "Pay an invoice")
-    @ResponseStatus(HttpStatus.OK)
-    public InvoiceResponseDTO payInvoice(@PathVariable Long id) {
-        return invoiceService.payInvoice(id);
-    }
+  @PutMapping("/{id}/pay")
+  @Operation(summary = "Pay an invoice")
+  @ResponseStatus(HttpStatus.OK)
+  public InvoiceResponseDTO payInvoice(@PathVariable Long id) {
+    return invoiceService.payInvoice(id);
+  }
 
-    @PutMapping("/{id}/cancel")
-    @Operation(summary = "Cancel an invoice")
-    @ResponseStatus(HttpStatus.OK)
-    public InvoiceResponseDTO cancelInvoice(@PathVariable Long id) {
-        return invoiceService.cancelInvoice(id);
-    }
+  @PutMapping("/{id}/cancel")
+  @Operation(summary = "Cancel an invoice")
+  @ResponseStatus(HttpStatus.OK)
+  public InvoiceResponseDTO cancelInvoice(@PathVariable Long id) {
+    return invoiceService.cancelInvoice(id);
+  }
 }
