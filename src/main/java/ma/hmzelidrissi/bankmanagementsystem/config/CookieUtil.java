@@ -1,5 +1,6 @@
 package ma.hmzelidrissi.bankmanagementsystem.config;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Value;
@@ -62,7 +63,7 @@ public class CookieUtil {
 
     return Arrays.stream(request.getCookies())
         .filter(cookie -> cookieName.equals(cookie.getName()))
-        .map(jakarta.servlet.http.Cookie::getValue)
+        .map(Cookie::getValue)
         .findFirst()
         .orElse(null);
   }
