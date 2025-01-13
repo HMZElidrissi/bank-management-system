@@ -63,3 +63,6 @@ application:
     cookie:
       name: jwt-token
       expiry: 86400  # 24 hours in seconds
+      secure: true
+      same-site: None # Lax, Strict, None: https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie/SameSite
+      domain: localhost
