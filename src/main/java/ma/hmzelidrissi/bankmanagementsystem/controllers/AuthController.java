@@ -18,7 +18,7 @@ public class AuthController {
   private final AuthService authService;
 
   @PostMapping("/signup")
-  @ResponseStatus(HttpStatus.OK)
+  @ResponseStatus(HttpStatus.CREATED)
   public AuthenticationResponseDto signup(
       @Valid @RequestBody SignupRequestDto request, HttpServletResponse response) {
     return authService.signup(request, response);
