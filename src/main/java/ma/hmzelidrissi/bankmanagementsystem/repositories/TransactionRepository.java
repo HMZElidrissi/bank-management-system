@@ -32,14 +32,14 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     Page<Transaction> findLargeTransactions(@Param("minAmount") double minAmount, Pageable pageable);
 
     @Query("""
-            SELECT t FROM Transaction t 
-            WHERE (:accountId IS NULL OR t.sourceAccount.id = :accountId OR t.destinationAccount.id = :accountId)
+            SELECT DISTINCT t FROM Transaction t 
+            WHERE (:accountId IS NULL OR (t.sourceAccount.id = :accountId OR t.destinationAccount.id = :accountId))
             AND (:type IS NULL OR t.type = :type)
             AND (:status IS NULL OR t.status = :status)
-            AND (:startDate IS NULL OR t.createdAt >= :startDate)
-            AND (:endDate IS NULL OR t.createdAt <= :endDate)
-            AND (:minAmount IS NULL OR t.amount >= :minAmount)
-            AND (:maxAmount IS NULL OR t.amount <= :maxAmount)
+            AND (CAST(:startDate AS timestamp) IS NULL OR t.createdAt >= :startDate)
+            AND (CAST(:endDate AS timestamp) IS NULL OR t.createdAt <= :endDate)
+            AND (CAST(:minAmount AS double) IS NULL OR t.amount >= :minAmount)
+            AND (CAST(:maxAmount AS double) IS NULL OR t.amount <= :maxAmount)
             """)
     Page<Transaction> search(
             @Param("accountId") Long accountId,

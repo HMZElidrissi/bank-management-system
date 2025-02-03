@@ -121,12 +121,16 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public TransactionResponseDTO getTransactionById(Long id) {
-        return null;
+        Transaction transaction = transactionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Transaction not found"));
+        return transactionMapper.toDTO(transaction);
     }
 
     @Override
     public TransactionResponseDTO getTransactionByReference(String reference) {
-        return null;
+        Transaction transaction = transactionRepository.findByReference(reference)
+                .orElseThrow(() -> new ResourceNotFoundException("Transaction not found"));
+        return transactionMapper.toDTO(transaction);
     }
 
     @Override
