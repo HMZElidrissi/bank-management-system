@@ -1,8 +1,8 @@
 # Bank Management System
 
-A robust banking management system built with Spring Boot and Angular, this repository serves as a guide and foundation of best practices for building enterprise-grade applications.
+A banking management system built with Spring Boot and Angular, this repository serves as a guide and foundation of best practices for building enterprise-grade applications.
 
-## 🚀 Features
+## Features
 
 ### User Management
 - Role-based access control (ADMIN, USER, EMPLOYEE)
@@ -52,7 +52,7 @@ A robust banking management system built with Spring Boot and Angular, this repo
     - Liquibase for database versioning
     - Docker for containerization
 
-## 📋 Prerequisites
+## Prerequisites
 
 - JDK 17 or later
 - Maven 3.6+
@@ -61,7 +61,7 @@ A robust banking management system built with Spring Boot and Angular, this repo
 - Docker & Docker Compose (optional)
 - Node.js & npm (for Angular frontend)
 
-## 🚀 Getting Started
+## Getting Started
 
 1. **Clone the repository**
 ```bash
@@ -106,7 +106,7 @@ docker-compose -f docker/services/elasticsearch.yml up
 - Swagger UI: http://localhost:8080/swagger-ui.html
 - Frontend: http://localhost:4200
 
-## 📚 API Documentation
+## API Documentation
 
 The API documentation is available through Swagger UI. After starting the application, visit:
 ```
